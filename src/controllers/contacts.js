@@ -9,12 +9,14 @@ import { sortByList } from '../db/models/Contact.js';
 export const getContactsController = async (req, res) => {
   const { page, perPage } = parsePaginationParams(req.query);
   const { sortBy, sortOrder } = parseSortParams(req.query, sortByList);
+  const userId = req.user._id;
 
   const data = await contactsService.getContacts({
     page,
     perPage,
     sortBy,
     sortOrder,
+    userId,
   });
 
   res.json({
@@ -25,15 +27,13 @@ export const getContactsController = async (req, res) => {
 };
 
 export const getContactsByIdController = async (req, res) => {
+  const { _id: userId } = req.user;
   const { contactId } = req.params;
 
-  const contact = await contactsService.getContactById(contactId);
+  const contact = await contactsService.getContactById({ contactId, userId });
 
   if (!contact) {
     throw createError(404, 'Contact not found');
-    // const error = new Error(`Contact with id=${contactId} not found`);
-    // error.status = 404;
-    // throw error;
   }
 
   res.json({
@@ -44,7 +44,8 @@ export const getContactsByIdController = async (req, res) => {
 };
 
 export const addContactsController = async (req, res) => {
-  const data = await contactsService.addContact(req.body);
+  const { _id: userId } = req.user;
+  const data = await contactsService.addContact({ ...req.body, userId });
 
   res.status(201).json({
     status: 201,
@@ -55,8 +56,9 @@ export const addContactsController = async (req, res) => {
 
 export const patchContactsController = async (req, res) => {
   const { contactId } = req.params;
+  const { _id: userId } = req.user;
   const updatedContact = await contactsService.updateContact(
-    contactId,
+    { userId, contactId },
     req.body,
   );
 
@@ -73,8 +75,9 @@ export const patchContactsController = async (req, res) => {
 
 export const deleteContactsController = async (req, res) => {
   const { contactId } = req.params;
+  const { _id: userId } = req.user;
 
-  const contact = await contactsService.deleteContact(contactId);
+  const contact = await contactsService.deleteContact({ userId, contactId });
 
   if (!contact) {
     throw createError(404, 'Contact not found');

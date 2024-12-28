@@ -2,6 +2,7 @@ import { Router } from 'express';
 import * as ContactsController from './../controllers/contacts.js';
 import { ctrlWrapper } from '../utils/ctrlWrapper.js';
 import { isValidId } from '../middlewares/isValidId.js';
+import { authenticate } from '../middlewares/authenticate.js';
 import { validateBody } from '../middlewares/validateBody.js';
 import {
   contactsAddSchema,
@@ -9,6 +10,8 @@ import {
 } from '../validation/validateContacts.js';
 
 const contactsRouter = Router();
+
+contactsRouter.use(authenticate);
 
 contactsRouter.get('/', ctrlWrapper(ContactsController.getContactsController));
 
