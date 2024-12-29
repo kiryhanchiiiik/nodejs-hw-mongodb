@@ -28,8 +28,9 @@ export const register = async (payload) => {
     ...payload,
     password: hashPassword,
   });
-
-  return newUser;
+  const userObject = newUser.toObject ? newUser.toObject() : { ...newUser };
+  const { password: _, ...userWithoutPassword } = userObject;
+  return userWithoutPassword;
 };
 
 export const login = async ({ email, password }) => {
