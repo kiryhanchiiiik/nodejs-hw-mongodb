@@ -19,6 +19,7 @@ export const registerController = async (req, res) => {
     message: 'Successfully registered a user!',
     data,
   });
+  console.log(data);
 };
 
 export const loginController = async (req, res) => {
