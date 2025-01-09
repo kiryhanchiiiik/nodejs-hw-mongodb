@@ -85,4 +85,6 @@ export const deleteContactsController = async (req, res) => {
   }
 
   res.status(204).send();
+
+  let i;
 };
