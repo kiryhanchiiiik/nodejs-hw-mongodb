@@ -4,6 +4,7 @@ import { ctrlWrapper } from '../utils/ctrlWrapper.js';
 import { isValidId } from '../middlewares/isValidId.js';
 import { authenticate } from '../middlewares/authenticate.js';
 import { validateBody } from '../middlewares/validateBody.js';
+import { upload } from '../middlewares/multer.js';
 import {
   contactsAddSchema,
   contactsUpdateSchema,
@@ -20,9 +21,10 @@ contactsRouter.get(
   isValidId,
   ctrlWrapper(ContactsController.getContactsByIdController),
 );
-
+// upload.array('poster', 8 - count files) - in one
 contactsRouter.post(
   '/',
+  upload.single('photo'),
   validateBody(contactsAddSchema),
   ctrlWrapper(ContactsController.addContactsController),
 );
