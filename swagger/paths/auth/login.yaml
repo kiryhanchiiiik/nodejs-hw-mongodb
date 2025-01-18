@@ -1,0 +1,59 @@
+tags:
+  - Auth
+summary: Log in an existing user
+operationId: loginUser
+description: 'Log in an existing user with email and password.'
+security: []
+requestBody:
+  required: true
+  content:
+    application/json:
+      schema:
+        type: object
+        required:
+          - email
+          - password
+        properties:
+          email:
+            type: string
+            format: email
+            description: "User's email address"
+            example: 'example@example.com'
+          password:
+            type: string
+            description: "User's password"
+            example: 'securePassword123'
+responses:
+  '200':
+    description: 'Successfully logged in the user.'
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            status:
+              type: integer
+              example: 200
+            message:
+              type: string
+              example: 'Successfully logged in an user!'
+            data:
+              type: object
+              properties:
+                accessToken:
+                  type: string
+                  description: 'accessToken for the user'
+                  example: 'uHI52FfVF5ZxuDYXt1+Nl8Y2U2vDiuXGAamVkmnn'
+  '401':
+    description: 'Unauthorized. Incorrect email or password.'
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            status:
+              type: integer
+              example: 401
+            message:
+              type: string
+              example: 'Email or password invalid'

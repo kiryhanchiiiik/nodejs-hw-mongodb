@@ -1,0 +1,22 @@
+tags:
+  - Auth
+summary: Log out the user and clear the session cookies
+operationId: logout
+description: 'Log out the user by clearing the session cookies (refreshToken and sessionId).'
+security: []
+responses:
+  '204':
+    description: 'Successfully logged out and cleared the session cookies.'
+  '401':
+    description: 'Unauthorized. Invalid sessionId or refreshToken.'
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            status:
+              type: integer
+              example: 401
+            message:
+              type: string
+              example: 'Invalid sessionId or refreshToken.'

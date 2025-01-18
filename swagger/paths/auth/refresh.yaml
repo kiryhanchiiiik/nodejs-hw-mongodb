@@ -1,0 +1,40 @@
+tags:
+  - Auth
+summary: Refresh an access token using a refresh token
+operationId: refreshToken
+description: 'Refresh the access token by providing the refresh token.'
+security: []
+responses:
+  '200':
+    description: 'Successfully refreshed a session!'
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            status:
+              type: integer
+              example: 200
+            message:
+              type: string
+              example: 'Successfully refreshed a session!'
+            data:
+              type: object
+              properties:
+                accessToken:
+                  type: string
+                  description: 'The new access token'
+                  example: 'new-access-token-here'
+  '401':
+    description: 'Unauthorized. Invalid or expired refresh token.'
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            status:
+              type: integer
+              example: 401
+            message:
+              type: string
+              example: 'Invalid or expired refresh token.'

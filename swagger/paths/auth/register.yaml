@@ -1,0 +1,77 @@
+tags:
+  - Auth
+summary: Register a new user
+operationId: registerUser
+description: 'Register a new user with name, email, and password.'
+security: []
+requestBody:
+  required: true
+  content:
+    application/json:
+      schema:
+        type: object
+        required:
+          - name
+          - email
+          - password
+        properties:
+          name:
+            type: string
+            description: "User's full name"
+            example: 'John Doe'
+          email:
+            type: string
+            format: email
+            description: "User's email address"
+            example: 'example@example.com'
+          password:
+            type: string
+            description: "User's password"
+            example: 'securePassword123'
+responses:
+  '201':
+    description: 'Successfully registered a new user.'
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            status:
+              type: integer
+              example: 201
+            message:
+              type: string
+              example: 'Successfully registered a user!'
+            data:
+              type: object
+              properties:
+                userId:
+                  type: string
+                  description: "User's unique identifier"
+                  example: '60d5b7b1f4b5b3203fcbfddf'
+  '400':
+    description: 'Bad request. Missing or invalid parameters.'
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            status:
+              type: integer
+              example: 400
+            message:
+              type: string
+              example: 'Invalid input data. Please check the provided details.'
+  '409':
+    description: 'Conflict. The email is already in use.'
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            status:
+              type: integer
+              example: 409
+            message:
+              type: string
+              example: 'Email in use'
