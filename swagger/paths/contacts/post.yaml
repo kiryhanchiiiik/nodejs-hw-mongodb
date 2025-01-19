@@ -16,10 +16,6 @@ requestBody:
           - contactType
           - userId
         properties:
-          _id:
-            description: "Contact's id"
-            type: string
-            example: 65e4decdd286b30065d54af9
           name:
             description: "Contact's name"
             type: string
@@ -40,10 +36,6 @@ requestBody:
             description: 'Is contact favorite'
             type: boolean
             example: false
-          userId:
-            description: "Contact's user id"
-            type: string
-            example: 65e4decdd286b30065d54af9
           photo:
             description: "Link to contact's photo"
             type: string

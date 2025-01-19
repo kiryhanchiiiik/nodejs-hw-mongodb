@@ -45,10 +45,18 @@ responses:
             data:
               type: object
               properties:
-                userId:
+                name:
                   type: string
-                  description: "User's unique identifier"
-                  example: '60d5b7b1f4b5b3203fcbfddf'
+                  description: "User's full name"
+                  example: 'John Doe'
+                email:
+                  type: string
+                  description: "User's email address"
+                  example: 'example@example.com'
+                password:
+                  type: string
+                  description: "User's password"
+
   '400':
     description: 'Bad request. Missing or invalid parameters.'
     content:
