@@ -1,4 +1,5 @@
 import * as authService from '../services/authService.js';
+import { generateOAuthUrl } from '../utils/googleOAuth2.js';
 
 const setupSession = (res, session) => {
   res.cookie('refreshToken', session.refreshToken, {
@@ -20,6 +21,31 @@ export const registerController = async (req, res) => {
     data,
   });
   console.log(data);
+};
+
+export const getGoogleOAuthUrlController = async (req, res) => {
+  const url = generateOAuthUrl();
+  res.json({
+    status: 200,
+    message: 'Successfully get Google Oauth url',
+    data: {
+      url,
+    },
+  });
+};
+export const loginWithGoogleController = async (req, res) => {
+  const { code } = req.body;
+  const session = await authService.loginOrRegisterWithGoogle(code);
+
+  setupSession(res, session);
+
+  res.json({
+    status: 200,
+    message: 'Successfully logged with Google OAuth!',
+    data: {
+      accessToken: session.accessToken,
+    },
+  });
 };
 
 export const loginController = async (req, res) => {

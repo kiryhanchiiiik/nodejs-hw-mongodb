@@ -14,6 +14,10 @@ import {
 import { SMTP, TEMPLATES_DIR } from '../constants/index.js';
 import { getEnvVar } from '../utils/getEnvVar.js';
 import { sendEmail } from '../utils/sendMail.js';
+import {
+  validateCode,
+  getUsernameFromGoogleTokenPayload,
+} from '../utils/googleOAuth2.js';
 
 const createSessionData = () => ({
   accessToken: randomBytes(30).toString('base64'),
@@ -164,4 +168,28 @@ export const resetPassword = async (payload) => {
     { _id: user._id },
     { password: encryptedPassword },
   );
+};
+
+export const loginOrRegisterWithGoogle = async (code) => {
+  const loginTicket = await validateCode(code);
+  const payload = loginTicket.getPayload();
+
+  let user = await UserCollection.findOne({ email: payload.email });
+
+  if (!user) {
+    const username = getUsernameFromGoogleTokenPayload(payload);
+    const password = await bcrypt.hash(randomBytes(10).toString('base64'), 10);
+    user = await UserCollection.create({
+      email: payload.email,
+      username,
+      password,
+    });
+  }
+
+  const sessionData = createSessionData();
+
+  return SessionCollection.create({
+    userId: user._id,
+    ...sessionData,
+  });
 };
